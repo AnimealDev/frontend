@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 import 'swiper/css/pagination';
 import BannerBox from './BannerBox'
 
-const BannerSection = () => {
+const BannerSection = (props) => {
     const { isMobile } = useContext(AuthContext)
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
     const [isStatusModalOpen, setIsStatusModalOpen] = useState(false)
@@ -101,18 +101,13 @@ const BannerSection = () => {
                     {/* <SwiperSlide>
                         <BannerBox link="/shop?slug=food" image="/img/banner-0.jpeg" heading="" button="" />
                     </SwiperSlide> */}
-                    <SwiperSlide>
-                        <BannerBox link="/shop?slug=food" image="/img/banner6.png" heading="" button="" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/brand/royal-canin" image="/img/banner7.png" heading="" button="" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/brand/smartheart" image="/img/banner8.png" heading="" button="" />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox link="/brand/farmina" image="/img/banner9.png" heading="" button="" />
-                    </SwiperSlide>
+                    {
+                        props.banners.data.map((banner, index) => {
+                            return <SwiperSlide>
+                                <BannerBox link={banner.attributes.url} image={banner.attributes.image.data.attributes.url} heading={banner.attributes.title} button={banner.attributes.buttontext} />
+                            </SwiperSlide>
+                        })
+                    }
                 </Swiper>
                 {/* 
                 <Swiper

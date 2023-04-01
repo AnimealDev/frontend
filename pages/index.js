@@ -47,7 +47,7 @@ export default function Home(props) {
       </Head>
 
       {/* BANNER SECTION */}
-      <BannerSection />
+      <BannerSection banners={props.banners} />
 
       {/* SHOP BY PET */}
       <ShopByPet animals={animals} />
@@ -74,16 +74,22 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
 
-  let metaData = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
-    {
-      slug: "https://animeal.in/"
-    }
-  )
+  let [metaData, banners] = await Promise.all[
+    axios.post(
+      `${process.env.NEXT_PUBLIC_API_URI}/metaurl/post/data`,
+      {
+        slug: "https://animeal.in/"
+      }
+    ),
+    axios.get(
+      `https://cms.animeal.in/api/banners?populate=*`,
+    )
+  ]
   return {
     props: {
       title: metaData.data.success.meta_title,
-      description: metaData.data.success.meta_description
+      description: metaData.data.success.meta_description,
+      banners: banners.data
     }
   }
 }
